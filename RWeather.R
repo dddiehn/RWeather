@@ -1,17 +1,22 @@
-mapplot <- function(xset,yset,zset,c,name,xlabel,ylabel,zlabel){
+mapplot <- function(data,x,y,z,c){
   library(rgl)
   library(akima)
-  
-  cset = c
+  xset <- data[[x]]
+  yset <- data[[y]]
+  zset <- data[[z]]
+  xlabel <- colnames(data)[x]
+  ylabel <- colnames(data)[y]
+  zlabel <- colnames(data)[z]
+  cset = data[[c]]
   cset = cut(c, breaks=64)
   cols = rainbow(64)[as.numeric(cset)]
   df <- data.frame(x=xset,
                    y=yset,
                    z=zset,
                    color=cols)
-  grad <- terrain.colors(5)
+  grad <- terrain.colors(100)
   plot3d(x=df$x,y=df$y,z=df$z,
-         xlab=xlabel, ylab=ylabel, zlab=zlabel, col=df$color, main="test", type="s", size=1)
+         xlab=xlabel, ylab=ylabel, zlab=zlabel, col=df$color, main="WEATHER", type="s", size=1)
   s=interp(df$x,df$y,df$z,duplicate="mean")
   
   #surfaces <- c(length(xset))
@@ -24,29 +29,19 @@ mapplot <- function(xset,yset,zset,c,name,xlabel,ylabel,zlabel){
   
 }
 
-xtest <- c(1,1,1,5,5,5,3,3,3)
-ytest <- c(1,1,3,2,3,4,3,4,5)
-ztest <- c(1,2,3,1,2,3,1,2,3)
-ctest <- c(10,20,30,15,25,35,20,30,40)
+xtest <- c(1,1,1,5,5,5,3,3,3,4,1,9,8,3,6,1,7,9,5)
+ytest <- c(1,1,3,2,3,4,3,4,5,9,5,1,3,5,4,7,9,5,6)
+ztest <- c(1,2,3,1,2,3,1,2,3,1,2,3,4,5,6,7,8,9,5)
+ctest <- c(10,20,30,15,25,35,20,30,40,10,50,30,40,60,20,10,50,20,30)
 
-getWeatherData <- function(){
+getWeatherData <- function(code){
   library("weatherData")
-  showAvailableColumns("NRT", "2014-04-04")
+  #showAvailableColumns("NRT", "2014-04-04")
+  #dat <- getWeatherForYear(code, 2013)
+  dat <- d3<- getWeatherForDate(code, start_date="2014-01-01",
+                                end_date = "2014-01-30",
+                                opt_detailed = TRUE,
+                                opt_all_columns = TRUE)
   
-}
-
-getHistoricalWeather <- function(airport.code="SFO", date="Sys.Date()")
-{
-  base.url <- 'http://api.wunderground.com/api/{f02bab890e85dbd8}/'
-  # compose final url
-  final.url <- paste(base.url, 'history_', date, '/q/', airport.code, '.json', sep='')
-  
-  
-  # reading in as raw lines from the web service
-  conn <- url(final.url)
-  raw.data <- readLines(conn, n=-1L, ok=TRUE)
-  # Convert to a JSON
-  weather.data <- fromJSON(paste(raw.data, collapse=""))
-  close(conn)
-  return(weather.data)
+  return(dat)
 }
