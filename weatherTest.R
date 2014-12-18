@@ -225,6 +225,36 @@ enterbutton <- gbutton("Enter", container = innergroup, expand = TRUE, handler =
     eday <- svalue(enddays)
   #Format the end date yyyy-mm-dd
   enddate <- paste(svalue(endyears), paste("-", paste(svalue(endmonths), paste("-", eday))))
+  
+  #data <- getWeatherData("ORD")
+
+  dummydata <- c("x", "y", "z")
+  colornames <- c("red", "blue", "yellow")
+  # Replace dummydata in the following comboboxes with colnames(data)
+  # Also replace colornames with... whatever it's supposed to be? Numbers?
+  
+  graphgroup <- ggroup(horizontal = TRUE, container = overallgroup)
+  addSpring(graphgroup)
+  
+  glabel("X:", container = graphgroup)
+  xgraph <- gcombobox(dummydata, container = graphgroup)
+  addSpring(graphgroup)
+  
+  glabel("Y:", container = graphgroup)
+  ygraph <- gcombobox(dummydata, container = graphgroup)
+  addSpring(graphgroup)
+  
+  glabel("Z:", container = graphgroup)
+  zgraph <- gcombobox(dummydata, container = graphgroup)
+  addSpring(graphgroup)
+  
+  glabel("Color:", container = graphgroup)
+  colors <- gcombobox(colornames, container = graphgroup, expand = TRUE)
+  addSpring(graphgroup)
+  
+  graphbutton <- gbutton("Graph", container = graphgroup, handler = function(h,...){
+    #Do you graphy stuff here
+  })
 })
 addSpring(innergroup)
 
