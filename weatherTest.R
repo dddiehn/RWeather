@@ -7,8 +7,7 @@ library(rgl)
 library(RWeather)
 library(weatherData)
 
-win <- gwindow("Weather Data", visible=TRUE, expand=TRUE)
-win.SetSizeRequest (500,200);
+win <- gwindow("Weather Data", visible=TRUE)
 nb <- gnotebook(cont=win)
 group <- ggroup(horizontal = FALSE, container=nb, label = "Local")
 focus(group)<-TRUE
@@ -35,54 +34,54 @@ addSpring(zipgroup)
 ziplabel <- glabel("Zip Code:", container=zipgroup)
 zipedit <- gedit("", container=zipgroup, expand = TRUE)
 zipbutton <- gbutton("Enter", container=zipgroup, expand = TRUE, handler=function(h,...) {
-    zipcode <- svalue(zipedit)
-    zipweather <- getWeatherFromYahoo(zipcode)
-    
-    current <- zipweather[[1]]
-    
-    location <- current[["location"]]
-    city <- location[["city"]]
-    region <- location[["region"]]
-    country <- location[["country"]]
-    
-    units <- current[["units"]]
-    units_temperature <- units[["temperature"]]
-    units_distance <- units[["distance"]]
-    units_pressure <- units[["pressure"]]
-    units_speed <- units[["speed"]]
-    
-    wind <- current[["wind"]]
-    wind_chill <- wind[["chill"]]
-    wind_direction <- wind[["direction"]]
-    wind_speed <- wind[["speed"]]
-    
-    atmosphere <- current[["atmosphere"]]
-    humidity <- atmosphere[["humidity"]]
-    visibility <- atmosphere[["visibility"]]
-    pressure <- atmosphere[["pressure"]]
-    rising <- atmosphere[["rising"]]
-    
-    astronomy <- current[["astronomy"]]
-    sunrise <- astronomy[["sunrise"]]
-    sunset <- astronomy[["sunset"]]
-    
-    condition <- current[["condition"]]
-    condition_text <- condition[["text"]]
-    condition_code <- condition[["code"]]
-    temperature <- condition[["temp"]]
-    date <- condition[["date"]]
-    
-    svalue(locationtext) <- sprintf("%s, %s, %s", city, region, country)
-    svalue(datetext) <- date
-    svalue(condtext) <- condition_text
-    svalue(temptext) <- sprintf("%s %s", temperature, units_temperature)
-    svalue(windtext) <- sprintf("%s %s coming from the %s", wind_speed, units_speed, getDirection(wind_direction))
-    svalue(chilltext) <- sprintf("%s %s", wind_chill, units_temperature)
-    svalue(humtext) <- sprintf("%s%%", humidity)
-    svalue(vistext) <- sprintf("%s %s", visibility, units_distance)
-    svalue(presstext) <- sprintf("%s %s, rising %s %s", pressure, units_pressure, rising, units_pressure)
-    svalue(sunrtext) <- sunrise
-    svalue(sunstext) <- sunset
+  zipcode <- svalue(zipedit)
+  zipweather <- getWeatherFromYahoo(zipcode)
+  
+  current <- zipweather[[1]]
+  
+  location <- current[["location"]]
+  city <- location[["city"]]
+  region <- location[["region"]]
+  country <- location[["country"]]
+  
+  units <- current[["units"]]
+  units_temperature <- units[["temperature"]]
+  units_distance <- units[["distance"]]
+  units_pressure <- units[["pressure"]]
+  units_speed <- units[["speed"]]
+  
+  wind <- current[["wind"]]
+  wind_chill <- wind[["chill"]]
+  wind_direction <- wind[["direction"]]
+  wind_speed <- wind[["speed"]]
+  
+  atmosphere <- current[["atmosphere"]]
+  humidity <- atmosphere[["humidity"]]
+  visibility <- atmosphere[["visibility"]]
+  pressure <- atmosphere[["pressure"]]
+  rising <- atmosphere[["rising"]]
+  
+  astronomy <- current[["astronomy"]]
+  sunrise <- astronomy[["sunrise"]]
+  sunset <- astronomy[["sunset"]]
+  
+  condition <- current[["condition"]]
+  condition_text <- condition[["text"]]
+  condition_code <- condition[["code"]]
+  temperature <- condition[["temp"]]
+  date <- condition[["date"]]
+  
+  svalue(locationtext) <- sprintf("%s, %s, %s", city, region, country)
+  svalue(datetext) <- date
+  svalue(condtext) <- condition_text
+  svalue(temptext) <- sprintf("%s %s", temperature, units_temperature)
+  svalue(windtext) <- sprintf("%s %s coming from the %s", wind_speed, units_speed, getDirection(wind_direction))
+  svalue(chilltext) <- sprintf("%s %s", wind_chill, units_temperature)
+  svalue(humtext) <- sprintf("%s%%", humidity)
+  svalue(vistext) <- sprintf("%s %s", visibility, units_distance)
+  svalue(presstext) <- sprintf("%s %s, rising %s %s", pressure, units_pressure, rising, units_pressure)
+  svalue(sunrtext) <- sunrise
+  svalue(sunstext) <- sunset
   add(infogroup, locationgroup, anchor= 0,0)
   delete(infogroup, zipgroup)
   
