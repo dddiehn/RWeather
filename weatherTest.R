@@ -186,47 +186,64 @@ addSpring(group)
 
 ###### HISTORICAL TAB #############
 
+#encompasses the whole historical page
 overallgroup <-ggroup(horizontal = FALSE, container = nb, label = "Historical")
 
+#airport code
 airportgroup <- ggroup(horizontal = TRUE, container = overallgroup)
 addSpring(airportgroup)
 glabel("Airport Code:", container = airportgroup)
 airportedit <- gedit("", container = airportgroup, expand = TRUE)
 addSpring(airportgroup)
 
+#encompasses the datesgroup and enter button in a horizontal fashion
 innergroup <- ggroup(horizontal = TRUE, container = overallgroup)
 addSpring(innergroup)
-hgroup <- ggroup(horizontal = FALSE, container = innergroup)
 
-#addSpring(innergroup)
+#encompasses both dates in a vertical fashion
+datesgroup <- ggroup(horizontal = FALSE, container = innergroup)
+
 enterbutton <- gbutton("Enter", container = innergroup, expand = TRUE, handler = function(h,...){
-  startdate <- paste(svalue(startyears), paste("-", paste(svalue(startmonths), paste("-", svalue(startdays)))))
-  print(startdate)
+  #Make sure the day of the month entered is valid for the start date
+  if(svalue(startmonths) == 2 && ((svalue(startdays)) == 29 || (svalue(startdays)) ==  30 || (svalue(startdays)) == 31))
+    sday <- 29
+  else if((svalue(startmonths) == 4 || svalue(startmonths) == 6 || svalue(startmonths) == 8 || svalue(startmonths) == 9 ||
+            svalue(startmonths) == 11) && svalue(startdays) == 31)
+    sday <- 30
+  else
+    sday <- svalue(startdays)
+  #Format the start date yyyy-mm-dd
+  startdate <- paste(svalue(startyears), paste("-", paste(svalue(startmonths), paste("-", sday))))
+  
+  #Make sure the day of the month entered is valid for the end date
+  if(svalue(endmonths) == 2 && ((svalue(enddays)) == 29 || (svalue(enddays)) ==  30 || (svalue(enddays)) == 31))
+    eday <- 29
+  else if((svalue(endmonths) == 4 || svalue(endmonths) == 6 || svalue(endmonths) == 8 || svalue(endmonths) == 9 ||
+             svalue(endmonths) == 11) && svalue(enddays) == 31)
+    eday <- 30
+  else
+    eday <- svalue(enddays)
+  #Format the end date yyyy-mm-dd
+  enddate <- paste(svalue(endyears), paste("-", paste(svalue(endmonths), paste("-", eday))))
 })
 addSpring(innergroup)
 
+#lists to put in the date comboboxes
 yearitems <- c(2010, 2011, 2012, 2013, 2014)
 monthitems <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 dayitems <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
 
-startdategroup <- ggroup(horizontal = TRUE, container = hgroup)
+#start date
+startdategroup <- ggroup(horizontal = TRUE, container = datesgroup)
 addSpring(startdategroup)
 glabel("Start Date:", container = startdategroup)
 startyears <- gcombobox(yearitems, container = startdategroup, expand = TRUE)
 startmonths <- gcombobox(monthitems, container = startdategroup, expand = TRUE)
-
-# if(svalue(months) == 1 || svalue(months) == 3 || svalue(months) == 5 || svalue(months) == 7 ||
-#      svalue(months) == 8 || svalue(months) == 10 || svalue(months) == 12)
-#   dayitems <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31)
-# else if(svalue(months) == 2)
-#   dayitems <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28)
-# else
-#   dayitems <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)
-
 startdays <- gcombobox(dayitems, container = startdategroup, expand = TRUE)
 addSpring(startdategroup)
 
-enddategroup <- ggroup(horizontal = TRUE, container = hgroup)
+#end date
+enddategroup <- ggroup(horizontal = TRUE, container = datesgroup)
 addSpring(enddategroup)
 glabel(" End Date:", container = enddategroup)
 endyears <- gcombobox(yearitems, container = enddategroup, expand = TRUE)
